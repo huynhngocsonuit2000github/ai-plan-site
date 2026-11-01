@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Engineering — Study Plan</title>
+<style>
+:root{
+  --bg:#0b0d14;--panel:#12151f;--panel2:#171b28;--line:#242a3b;--text:#e7eaf3;--mute:#8a93ab;
+  --accent:#7c9cff;--accent2:#b07cff;--ok:#3ddc97;
+  --p0:#7c9cff;--p1:#b07cff;--p2:#ff7ca8;--p3:#ffb86b;--p4:#f5e66b;--p5:#3ddc97;--p6:#4fd6e8;--p7:#6bb5ff;--p8:#ff8a6b;--p9:#e08cff;
+}
+@media (prefers-color-scheme:light){
+  :root{--bg:#f5f6fb;--panel:#fff;--panel2:#f0f2f9;--line:#dfe3ef;--text:#1b2033;--mute:#6a7390}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(900px 500px at 10% -10%,#7c9cff22,transparent 60%),radial-gradient(800px 500px at 100% 0,#b07cff1f,transparent 60%)}
+a{color:inherit}
+/* top bar */
+.top{position:sticky;top:0;z-index:20;height:56px;display:flex;align-items:center;gap:14px;padding:0 24px;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{font-weight:800;letter-spacing:-.01em;text-decoration:none;display:flex;align-items:center;gap:9px}
+.brand i{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:inline-block}
+.top .crumbs{color:var(--mute);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.seg{display:flex;padding:3px;border-radius:11px;background:var(--panel);border:1px solid var(--line)}
+.seg button{border:0;background:none;color:var(--mute);font:inherit;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:8px;cursor:pointer;letter-spacing:.04em}
+.seg button.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0b0d14}
+.layout{display:grid;grid-template-columns:270px 1fr;max-width:1320px;margin:0 auto}
+.side{position:sticky;top:56px;height:calc(100vh - 56px);overflow:auto;padding:24px 16px;border-right:1px solid var(--line)}
+.side h2{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 12px;padding:0 10px}
+.side a.nl{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;text-decoration:none;font-size:13.5px}
+.side a.nl:hover{background:var(--panel2)}
+.side a.nl.active{background:var(--panel2);outline:1px solid var(--line)}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.side .pc{margin-left:auto;font-size:11px;color:var(--mute);font-variant-numeric:tabular-nums}
+main{padding:32px 36px 90px;min-width:0}
+[hidden]{display:none!important}
+/* plan */
+.hero{display:flex;gap:32px;align-items:center;flex-wrap:wrap;padding:28px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,var(--panel),var(--panel2))}
+.hero h1{margin:0 0 6px;font-size:30px;letter-spacing:-.02em;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:0;color:var(--mute);max-width:540px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{font-size:12px;padding:4px 10px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--mute)}
+.ring{position:relative;width:132px;height:132px;flex:none;margin-left:auto}
+.ring svg{transform:rotate(-90deg)}
+.ring .num{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring b{font-size:28px;line-height:1}
+.ring small{display:block;color:var(--mute);font-size:11px;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0 8px}
+.stat{padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.stat b{display:block;font-size:22px}
+.stat span{font-size:12px;color:var(--mute)}
+.timeline{margin:22px 0 6px}
+.lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:0 0 10px;font-weight:600}
+.weeks{display:grid;grid-template-columns:repeat(24,1fr);gap:5px}
+.wk{aspect-ratio:1;border-radius:7px;background:var(--panel2);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s}
+.wk:hover{transform:translateY(-2px)}
+.wk i{position:absolute;left:0;bottom:0;height:var(--p,0%);width:100%;background:var(--c);opacity:.55}
+.wk span{position:relative;z-index:1;font-weight:600}
+.wk.now{outline:2px solid var(--text);outline-offset:1px}
+.toolbar{display:flex;gap:10px;align-items:center;margin:26px 0 6px;flex-wrap:wrap}
+.btn{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--accent)}
+.btn.on{background:var(--accent);border-color:var(--accent);color:#0b0d14}
+.spacer{flex:1}
+section.phase{margin-top:38px;scroll-margin-top:76px}
+.phead{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.badge{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-weight:800;color:#0b0d14;background:var(--c);flex:none}
+.phead h2{margin:0;font-size:20px;letter-spacing:-.01em}
+.phead small{color:var(--mute)}
+.pbar{flex:1;max-width:220px;margin-left:auto;height:6px;border-radius:9px;background:var(--panel2);overflow:hidden}
+.pbar i{display:block;height:100%;width:var(--p,0%);background:var(--c);transition:width .3s}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;border-top:3px solid var(--c);scroll-margin-top:80px}
+.card.now{box-shadow:0 0 0 1px var(--c),0 10px 40px -14px var(--c)}
+.card.full{grid-column:1/-1}
+.card h3{margin:0 0 2px;font-size:15px;display:flex;align-items:center;gap:8px}
+.card .sub{font-size:12px;color:var(--mute);margin-bottom:10px}
+.tag{font-size:10px;padding:2px 8px;border-radius:99px;background:var(--c);color:#0b0d14;font-weight:700;letter-spacing:.04em;white-space:nowrap}
+ul.todo{list-style:none;margin:0;padding:0}
+ul.todo .row{display:flex;gap:10px;padding:7px 8px;border-radius:9px;align-items:flex-start}
+ul.todo .row:hover{background:var(--panel2)}
+ul.todo a.it{flex:1;text-decoration:none;cursor:pointer}
+ul.todo a.it:hover{color:var(--c)}
+ul.todo .chev{color:var(--mute);opacity:0;transition:.15s;text-decoration:none}
+ul.todo .row:hover .chev{opacity:1;color:var(--c)}
+ul.todo li.done a.it{color:var(--mute);text-decoration:line-through;text-decoration-color:#8a93ab66}
+ul.todo li.flash .row{animation:flash 1.4s ease}
+@keyframes flash{0%,40%{background:color-mix(in srgb,var(--c) 22%,transparent)}100%{background:transparent}}
+input.ck{appearance:none;width:18px;height:18px;border:1.6px solid var(--mute);border-radius:6px;flex:none;margin:2px 0 0;display:grid;place-items:center;cursor:pointer;transition:.15s}
+input.ck:checked{background:var(--c);border-color:var(--c)}
+input.ck:checked::after{content:"";width:9px;height:5px;border-left:2px solid #0b0d14;border-bottom:2px solid #0b0d14;transform:rotate(-45deg) translate(1px,-1px)}
+input.ck.round{border-radius:50%}
+body.hide-done #viewPlan li.done{display:none}
+.rhythm{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.rh{padding:12px 14px;border-radius:14px;background:var(--panel2);border:1px solid var(--line)}
+.rh b{display:block;font-size:12px;color:var(--accent)}
+.rh em{font-style:normal;font-size:12px;color:var(--mute)}
+.rh p{margin:4px 0 0;font-size:13px}
+.dod{margin-top:12px;padding:12px 16px;border-radius:14px;border:1px dashed var(--accent);color:var(--mute);font-size:13px}
+.dod b{color:var(--text)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--mute);font-weight:600;font-size:12px}
+td[contenteditable]{outline:none}
+td[contenteditable]:focus{background:var(--panel2);border-radius:6px}
+footer{margin-top:50px;color:var(--mute);font-size:12px}
+.kbd{font:11px ui-monospace,monospace;padding:1px 5px;border:1px solid var(--line);border-radius:5px;background:var(--panel2)}
+/* detail */
+.dside .back{display:flex;align-items:center;gap:8px;margin:0 0 18px;padding:9px 12px;border-radius:11px;border:1px solid var(--line);background:var(--panel);text-decoration:none;font-size:13.5px;font-weight:600}
+.dside .back:hover{border-color:var(--c)}
+.dside .phc{display:flex;gap:10px;align-items:center;padding:0 6px 14px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.dside .phc .badge{width:34px;height:34px;border-radius:10px;font-size:14px}
+.dside .phc b{font-size:13.5px;line-height:1.3;display:block}
+.dside .phc small{color:var(--mute);font-size:11.5px}
+.dside .wkh{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:16px 8px 6px;font-weight:700}
+.dside a.si{display:flex;gap:9px;align-items:flex-start;padding:7px 8px;border-radius:9px;text-decoration:none;font-size:13px;line-height:1.4}
+.dside a.si:hover{background:var(--panel2)}
+.dside a.si.cur{background:var(--panel2);box-shadow:inset 3px 0 0 var(--c);font-weight:600}
+.dside a.si .st{width:14px;height:14px;border-radius:50%;border:1.6px solid var(--mute);flex:none;margin-top:2px}
+.dside a.si.ok .st{background:var(--c);border-color:var(--c)}
+.dside a.si.ok span{color:var(--mute)}
+.dhead{padding:30px 32px;border:1px solid var(--line);border-radius:22px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 16%,var(--panel)),var(--panel) 60%)}
+.dhead::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:var(--c);opacity:.09}
+.dhead .dcrumb{font-size:12.5px;color:var(--mute);margin-bottom:10px}
+.dhead h1{margin:0 0 14px;font-size:28px;line-height:1.25;letter-spacing:-.02em;max-width:860px}
+.dhead .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;margin-top:22px;align-items:start}
+.sticky{position:sticky;top:76px;display:flex;flex-direction:column;gap:16px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
+.box+.box{margin-top:16px}
+.box h4{margin:0 0 12px;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--mute);display:flex;gap:8px;align-items:center}
+.box h4::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--c)}
+.goal{font-size:16.5px;line-height:1.6}
+.box ul.plain{margin:0;padding:0;list-style:none}
+.box ul.plain li{position:relative;padding:7px 0 7px 22px;font-size:14.5px;border-bottom:1px dashed var(--line)}
+.box ul.plain li:last-child{border-bottom:0}
+.box ul.plain li::before{content:"";position:absolute;left:4px;top:15px;width:7px;height:7px;border-radius:50%;border:2px solid var(--c)}
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding:9px 0 9px 42px;font-size:14.5px}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:7px;width:28px;height:28px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:800;color:var(--c)}
+ol.steps li:not(:last-child)::after{content:"";position:absolute;left:14px;top:37px;bottom:-7px;width:1px;background:var(--line)}
+.aibox{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.aibox+.aibox{margin-top:12px}
+.aihead{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--panel2);font-size:13.5px;flex-wrap:wrap}
+.aihead span{color:var(--mute)}
+.aihead button{margin-left:auto;font-size:11.5px;padding:5px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer}
+.aihead button:hover{border-color:var(--c)}
+.aihead button.ok{border-color:var(--ok);color:var(--ok)}
+.aibox pre{margin:0;padding:13px 15px;white-space:pre-wrap;font:13px/1.6 ui-monospace,Consolas,monospace}
+.res a{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border-radius:10px;text-decoration:none;font-size:13.5px;border:1px solid transparent}
+.res a:hover{background:var(--panel2);border-color:var(--line)}
+.res a::before{content:"↗";color:var(--c);font-weight:700}
+.crit label{display:flex;gap:10px;padding:7px 6px;border-radius:9px;cursor:pointer;font-size:14px;align-items:flex-start}
+.crit label:hover{background:var(--panel2)}
+.cprog{height:6px;border-radius:9px;background:var(--panel2);overflow:hidden;margin:2px 0 12px}
+.cprog i{display:block;height:100%;width:var(--p,0%);background:var(--c);transition:width .3s}
+.hint{font-size:12.5px;color:var(--mute);margin:12px 0 10px}
+.mark{width:100%;padding:12px 16px;border-radius:12px;border:0;font:inherit;font-weight:800;font-size:14.5px;cursor:pointer;background:var(--c);color:#0b0d14;transition:transform .1s}
+.mark:active{transform:scale(.98)}
+.mark.is-done{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.pn a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--panel);text-decoration:none}
+.pn a:hover{border-color:var(--c)}
+.pn a small{display:block;color:var(--mute);font-size:12px;margin-bottom:4px}
+.pn a b{font-size:14px;font-weight:600}
+.pn a.nx{text-align:right}
+.pn a.off{visibility:hidden}
+.keys{margin-top:18px;color:var(--mute);font-size:12px;text-align:center}
+.syncbtn{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.syncbtn:hover{border-color:var(--accent)}
+.syncbtn i{width:8px;height:8px;border-radius:50%;background:var(--mute)}
+.syncbtn[data-s=ok] i{background:var(--ok)}
+.syncbtn[data-s=busy] i{background:#ffb86b;animation:pulse 1s infinite}
+.syncbtn[data-s=err] i{background:#ff6b6b}
+@keyframes pulse{50%{opacity:.3}}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:18px;padding:24px;width:min(460px,92vw)}
+dialog::backdrop{background:#0009}
+dialog h3{margin:0 0 8px}
+dialog p{margin:0 0 12px;color:var(--mute);font-size:13.5px}
+dialog input[type=password],dialog input[type=text]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;margin-bottom:12px}
+dialog .acts{display:flex;gap:8px;flex-wrap:wrap}
+dialog .msg{font-size:12.5px;margin-top:10px;color:var(--mute)}
+@media(max-width:1100px){.dgrid{grid-template-columns:1fr}.sticky{position:static}}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.side{display:none}main{padding:20px 16px 70px}.weeks{grid-template-columns:repeat(12,1fr)}.ring{margin-left:0}.dhead{padding:22px}.dhead h1{font-size:22px}.top .crumbs{display:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#/"><i></i><span data-t="brand"></span></a>
+  <span class="crumbs" id="topCrumbs"></span>
+  <button class="syncbtn" id="syncBtn" data-s="off"><i></i><span data-t="sync"></span></button>
+  <div class="seg" id="langSeg"><button data-lang="vi">VI</button><button data-lang="en">EN</button></div>
+</header>
+
+<!-- ============ PLAN VIEW ============ -->
+<div class="layout" id="viewPlan">
+<nav class="side"><h2>Phases</h2><div id="nav"></div></nav>
+<main>
+  <div class="hero">
+    <div>
+      <h1>Build an Autonomous AI Scrum Team</h1>
+      <p data-t="heroDesc"></p>
+      <div class="chips"><span class="chip" data-t="c1"></span><span class="chip" data-t="c2"></span><span class="chip" data-t="c3"></span><span class="chip">Capstone: Task Management</span></div>
+    </div>
+    <div class="ring">
+      <svg width="132" height="132" viewBox="0 0 132 132">
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#7c9cff"/><stop offset="1" stop-color="#b07cff"/></linearGradient></defs>
+        <circle cx="66" cy="66" r="56" fill="none" stroke="var(--line)" stroke-width="10"/>
+        <circle id="arc" cx="66" cy="66" r="56" fill="none" stroke="url(#g)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.86" stroke-dashoffset="351.86" style="transition:stroke-dashoffset .5s"/>
+      </svg>
+      <div class="num"><div><b id="pct">0%</b><small data-t="complete"></small></div></div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="sDone">0</b><span data-t="sDone"></span></div>
+    <div class="stat"><b id="sLeft">0</b><span data-t="sLeft"></span></div>
+    <div class="stat"><b id="sWeeks">0 / 24</b><span data-t="sWeeks"></span></div>
+    <div class="stat"><b id="sNow">–</b><span data-t="sNow"></span></div>
+  </div>
+  <div class="timeline"><h3 class="lbl" data-t="timeline"></h3><div class="weeks" id="weeks"></div></div>
+  <div class="toolbar">
+    <button class="btn" id="hideDone"></button>
+    <button class="btn" id="jump" data-t="jump"></button>
+    <span class="spacer"></span>
+    <button class="btn" id="reset" data-t="reset"></button>
+  </div>
+  <section class="phase" id="rhythm">
+    <div class="phead"><div class="badge" style="--c:var(--accent)">⏱</div><div><h2 data-t="rhythmTitle"></h2><small data-t="rhythmSub"></small></div></div>
+    <div class="rhythm" id="rhythmGrid"></div>
+    <div class="dod" id="dod"></div>
+  </section>
+  <div id="phases"></div>
+  <section class="phase" id="notes">
+    <div class="phead"><div class="badge" style="--c:var(--accent2)">✎</div><div><h2 data-t="notesTitle"></h2><small data-t="notesSub"></small></div></div>
+    <div class="card full" style="--c:var(--accent2)">
+      <table>
+        <thead><tr><th style="width:80px" data-t="thWeek"></th><th style="width:130px" data-t="thDate"></th><th data-t="thLink"></th><th data-t="thNote"></th></tr></thead>
+        <tbody id="noteBody"></tbody>
+      </table>
+      <div style="margin-top:12px"><button class="btn" id="addNote" data-t="addRow"></button></div>
+    </div>
+  </section>
+  <footer id="footer"></footer>
+</main>
+</div>
+
+<!-- ============ DETAIL VIEW ============ -->
+<div class="layout" id="viewDetail" hidden>
+<nav class="side dside" id="dSide"></nav>
+<main id="dMain"></main>
+</div>
+
+<dialog id="syncDlg">
+  <h3 data-t="syncTitle"></h3>
+  <p id="syncDesc"></p>
+  <input type="password" id="syncToken" autocomplete="off" placeholder="ghp_… / github_pat_…">
+  <div class="acts">
+    <button class="btn on" id="syncConnect" data-t="syncConnect"></button>
+    <button class="btn" id="syncNow" data-t="syncNow"></button>
+    <button class="btn" id="syncOff" data-t="syncOff"></button>
+    <button class="btn" id="syncClose" data-t="close"></button>
+  </div>
+  <div class="msg" id="syncMsg"></div>
+</dialog>
+
+<script src="study-plan-details.js"></script>
+<script src="study-plan-details.en.js"></script>
+<script>
+const PHASES=[
+ {n:0,name:"Foundation",c:"--p0",goal:"Repo, vision, AI engineering standards",weeks_:[
+  {w:1,t:"Nền tảng & môi trường",items:[
+   "Học: Model vs Agent vs Tool vs Workflow",
+   "Học: model-agnostic architecture, Git/GitHub collaboration",
+   "Cài/đăng ký: Claude Code, Antigravity, Gemini, ChatGPT, GitHub, Jira, Confluence, Docker",
+   "Tạo repo ai-task-management (cấu trúc theo roadmap)",
+   "Viết docs/vision.md và docs/architecture.md",
+   "Viết AI Engineering standards trong ai-engineering/standards/",
+   "Claude Code đọc shared context (CLAUDE.md trỏ về standards)",
+   "Antigravity dùng cùng standards",
+   "Chạy cùng 1 task nhỏ ở cả 2 tool, so sánh kết quả",
+   "Learning note tuần 1 + commit"]}]},
+ {n:1,name:"LLM fundamentals & prompt engineering",c:"--p1",goal:"Multi-model requirement analyzer",weeks_:[
+  {w:2,t:"Lý thuyết + prototype",items:[
+   "Học: tokenization, context window, temperature, system prompt, hallucination",
+   "Học: structured output (JSON schema), tool/function calling",
+   "Tạo .NET project RequirementAnalyzer, định nghĩa ILlmProvider",
+   "Implement provider đầu tiên (Claude hoặc Gemini)",
+   "Output JSON theo schema (projectName, features, missingRequirements, questions)",
+   "Test: schema validation"]},
+  {w:3,t:"Multi-provider + so sánh",items:[
+   "Implement provider thứ 2 và 3",
+   "Chạy cùng bộ requirement qua 3 model",
+   "So sánh: accuracy, missing-info detection, JSON validity, latency/cost",
+   "Viết bảng so sánh + note + commit"]}]},
+ {n:2,name:"Context engineering & RAG",c:"--p2",goal:"Project knowledge system",weeks_:[
+  {w:4,t:"Dựng knowledge base",items:[
+   "Học: context management, memory ngắn/dài hạn, embeddings, RAG, chunking",
+   "Tạo knowledge/ (6 file theo roadmap)",
+   "Điền nội dung thật cho PROJECT_CONTEXT, BUSINESS_RULES"]},
+  {w:5,t:"Hoàn thiện & kiểm thử truy vấn",items:[
+   "Điền CODING_STANDARDS, DATABASE_DESIGN, API_CONTRACTS, ARCHITECTURE_DECISIONS",
+   "Hỏi agent 5 câu mẫu (architecture, task states, Done conditions, APIs, authz)",
+   "Đánh giá độ chính xác; chỉ thêm vector DB nếu thật sự cần",
+   "Note + commit"]}]},
+ {n:3,name:"AI Agent engineering",c:"--p3",goal:"BA, Architect, Developer agents",weeks_:[
+  {w:6,t:"Business Analyst agent",items:[
+   "Học: agent architecture, tools & permissions, skills, ReAct, HITL",
+   "Viết role spec + I/O contract: BA Agent",
+   "Chạy BA agent, kiểm tra output (stories, AC, rules, questions)"]},
+  {w:7,t:"Solution Architect agent",items:[
+   "Role spec + contract: Architect Agent",
+   "Chạy với output đã duyệt của BA"]},
+  {w:8,t:"Developer agent",items:[
+   "Role spec + contract: Developer Agent",
+   "Chạy Developer role bằng cả Claude Code và Antigravity",
+   "Xác nhận spec không phụ thuộc tool",
+   "Note + commit"]}]},
+ {n:4,name:"MCP & tool integration",c:"--p4",goal:"Agents kết nối Jira, Confluence, GitHub",weeks_:[
+  {w:9,t:"MCP cơ bản",items:[
+   "Học: MCP architecture, client/server, tools/resources/prompts, OAuth",
+   "Kết nối Filesystem + GitHub MCP (read-only trước)"]},
+  {w:10,t:"Jira + Confluence",items:[
+   "Kết nối Jira + Confluence MCP",
+   "Bài tập: BA đọc requirement → stories → Jira Epic/tasks → trang Confluence",
+   "Rà soát least-privilege, audit log",
+   "Note + commit"]}]},
+ {n:5,name:"Multi-agent architecture",c:"--p5",goal:"Workflow 4 agent với shared state",weeks_:[
+  {w:11,t:"Pattern & chọn framework",items:[
+   "Học: supervisor, handoff, parallel, shared state",
+   "Đọc nhanh MS Agent Framework, LangGraph, Semantic Kernel, ADK → chọn 1"]},
+  {w:12,t:"Supervisor + BA → Architect",items:[
+   "Dựng Scrum Master/Supervisor + shared state persisted",
+   "Nối BA → Architect"]},
+  {w:13,t:"Developer + QA",items:[
+   "Thêm Developer + QA, dependency rules (approval gate, BE/FE song song)",
+   "Demo workflow 4 agent + note + commit"]}]},
+ {n:6,name:"Workflow automation",c:"--p6",goal:"Requirement-to-delivery workflow",weeks_:[
+  {w:14,t:"Nền tảng workflow",items:[
+   "Học: event-driven, state machine, idempotency, retry/timeout, webhook",
+   "Chọn công cụ (Worker Service / Hangfire / n8n) — chỉ cái cần thiết"]},
+  {w:15,t:"Requirement → PR",items:[
+   "Luồng: Requirement → BA → Approval → Architect → Jira → SM → Dev → PR"]},
+  {w:16,t:"PR → Docs",items:[
+   "Reviewer → QA → Deploy Dev → Smoke test → Docs agent → Jira/Confluence",
+   "Chạy end-to-end không copy/paste thủ công",
+   "Note + commit"]}]},
+ {n:7,name:"Evaluation & observability",c:"--p7",goal:"Dataset, metrics, traces",weeks_:[
+  {w:17,t:"Dataset đánh giá",items:[
+   "Học: golden dataset, regression, traces/spans, cost tracking",
+   "Tạo 30–50 requirement mẫu + tiêu chí chấm"]},
+  {w:18,t:"Chạy eval + tracing",items:[
+   "Chạy nhiều tổ hợp model/tool cho BA, đo 5 metric",
+   "Tích hợp OpenTelemetry/Langfuse",
+   "Báo cáo chọn model theo bằng chứng"]}]},
+ {n:8,name:"Production AI engineering",c:"--p8",goal:"Docker deployment an toàn, quan sát được",weeks_:[
+  {w:19,t:"Bảo mật & container",items:[
+   "Học: secrets, RBAC, sandbox, rate limit, cost optimization",
+   "Dockerfile cho frontend, API, agent-worker"]},
+  {w:20,t:"Compose & cô lập",items:[
+   "docker-compose: postgres, redis, langfuse, n8n",
+   "Cô lập workspace agent, scope quyền"]},
+  {w:21,t:"CI/CD & vận hành",items:[
+   "CI/CD, rollback, runbook phục hồi, human approval cho prod",
+   "Note + commit"]}]},
+ {n:9,name:"Capstone: Autonomous AI Scrum Team",c:"--p9",goal:"Giao Task Management app end-to-end",weeks_:[
+  {w:22,t:"Từ yêu cầu đến sprint plan",items:[
+   "Chạy request mẫu: phân tích → clarify → Jira/Confluence → thiết kế → sprint plan"]},
+  {w:23,t:"Implement & review",items:[
+   "Dev agents làm backend + frontend → review PR → test → fix bug"]},
+  {w:24,t:"Deploy & nghiệm thu",items:[
+   "Docker build → deploy Dev → smoke → release notes → email report",
+   "Nghiệm thu: traceability end-to-end",
+   "Nghiệm thu: thay Claude Code ↔ Antigravity không đổi workflow",
+   "Nghiệm thu: thay model cho BA role",
+   "Nghiệm thu: eval phát hiện thay đổi chất lượng",
+   "Nghiệm thu: deploy prod cần human approval"]}]}
+];
+
+const T={
+ vi:{sync:"Đồng bộ",syncTitle:"Đồng bộ qua GitHub Gist",syncConnect:"Kết nối",syncNow:"Đồng bộ ngay",syncOff:"Ngắt kết nối",close:"Đóng",
+  syncDesc:'Dán GitHub token (classic) có quyền <b>gist</b>. <a href="https://github.com/settings/tokens/new?scopes=gist&description=ai-plan-sync" target="_blank" rel="noopener">Tạo token ↗</a>. Làm tương tự trên mọi thiết bị, dùng cùng 1 token. Tiến độ lưu trong 1 secret gist của bạn.',
+  syncOk:"Đã đồng bộ",syncBusy:"Đang đồng bộ…",syncErr:"Lỗi đồng bộ: ",syncNeed:"Hãy dán token trước.",
+  brand:"AI Engineering Plan",heroDesc:"Lộ trình 24 tuần học AI Engineering: từ LLM cơ bản đến hệ thống multi-agent model-agnostic giao một ứng dụng .NET + Angular.",
+  c1:"24 tuần",c2:"8–12 giờ/tuần",c3:"30% học · 50% làm · 20% đánh giá",complete:"hoàn thành",
+  sDone:"việc đã xong",sLeft:"việc còn lại",sWeeks:"tuần hoàn thành",sNow:"tuần hiện tại",timeline:"Timeline 24 tuần",
+  hide:"Ẩn việc đã xong",show:"Hiện việc đã xong",jump:"Đến tuần hiện tại",reset:"Reset tiến độ",resetQ:"Xóa toàn bộ tiến độ?",
+  rhythmTitle:"Nhịp mỗi tuần",rhythmSub:"Mẫu ~10 giờ",
+  rh:[["Học 1","2h","Đọc docs/khái niệm"],["Làm 1","2–3h","Implement phần chính"],["Làm 2","2–3h","Implement tiếp / thử nghiệm"],["Học 2","1h","Đào sâu phần chưa hiểu"],["Đánh giá","1–2h","Test, đo, so sánh"],["Ghi chú","1h","Learning note + commit/PR"]],
+  dod:"<b>Definition of done mỗi tuần:</b> 1 concept hiểu · 1 feature/experiment chạy · ≥1 test/eval · 1 learning note · 1 commit/PR.",
+  notesTitle:"Learning notes log",notesSub:"Click ô để sửa — tự lưu trong trình duyệt",thWeek:"Tuần",thDate:"Ngày",thLink:"Link note",thNote:"Ghi chú",addRow:"+ Thêm dòng",
+  footer:'Nguồn: <a href="ai-engineering-roadmap.md">ai-engineering-roadmap.md</a> · Tiến độ lưu trong localStorage của trình duyệt này · Click tên việc để mở trang chi tiết.',
+  week:"Tuần",weeks:"Tuần",doneOf:"hoàn thành",allDone:"Xong 🎉",
+  back:"← Về lộ trình",task:"Việc",goal:"Mục tiêu",learn:"Cần tìm hiểu",ai:"Học / làm với AI nào",res:"Tài liệu",practice:"Thực hành",crit:"Tiêu chí hoàn thành",
+  copy:"Copy prompt",copied:"Đã copy ✓",mark:"✓ Mark done",unmark:"↺ Bỏ đánh dấu",isDone:"Đã hoàn thành 🎉",ready:"Đủ tiêu chí — mark done thôi!",met:"Đạt {k}/{n} tiêu chí",
+  prev:"← Việc trước",next:"Việc sau →",noDetail:"Chưa có chi tiết cho mục này.",keys:"<span class=kbd>J</span>/<span class=kbd>K</span> chuyển việc · <span class=kbd>X</span> mark done · <span class=kbd>Esc</span> về lộ trình"},
+ en:{sync:"Sync",syncTitle:"Sync via GitHub Gist",syncConnect:"Connect",syncNow:"Sync now",syncOff:"Disconnect",close:"Close",
+  syncDesc:'Paste a GitHub (classic) token with the <b>gist</b> scope. <a href="https://github.com/settings/tokens/new?scopes=gist&description=ai-plan-sync" target="_blank" rel="noopener">Create token ↗</a>. Do the same on every device with the same token. Progress is stored in one secret gist of yours.',
+  syncOk:"Synced",syncBusy:"Syncing…",syncErr:"Sync error: ",syncNeed:"Paste a token first.",
+  brand:"AI Engineering Plan",heroDesc:"A 24-week AI Engineering roadmap: from LLM fundamentals to a model-agnostic multi-agent system that delivers a .NET + Angular app.",
+  c1:"24 weeks",c2:"8–12 h/week",c3:"30% learn · 50% build · 20% evaluate",complete:"complete",
+  sDone:"tasks done",sLeft:"tasks left",sWeeks:"weeks complete",sNow:"current week",timeline:"24-week timeline",
+  hide:"Hide completed",show:"Show completed",jump:"Go to current week",reset:"Reset progress",resetQ:"Clear all progress?",
+  rhythmTitle:"Weekly rhythm",rhythmSub:"~10 h template",
+  rh:[["Learn 1","2h","Read docs/concepts"],["Build 1","2–3h","Implement the main part"],["Build 2","2–3h","Keep building / experiment"],["Learn 2","1h","Dig into what's unclear"],["Evaluate","1–2h","Test, measure, compare"],["Notes","1h","Learning note + commit/PR"]],
+  dod:"<b>Weekly definition of done:</b> 1 concept understood · 1 working feature/experiment · ≥1 test/eval · 1 learning note · 1 commit/PR.",
+  notesTitle:"Learning notes log",notesSub:"Click a cell to edit — saved in your browser",thWeek:"Week",thDate:"Date",thLink:"Note link",thNote:"Notes",addRow:"+ Add row",
+  footer:'Source: <a href="ai-engineering-roadmap.md">ai-engineering-roadmap.md</a> · Progress is stored in this browser\'s localStorage · Click a task to open its detail page.',
+  week:"Week",weeks:"Weeks",doneOf:"done",allDone:"All done 🎉",
+  back:"← Back to plan",task:"Task",goal:"Goal",learn:"What to learn",ai:"Which AI to use",res:"Resources",practice:"Practice",crit:"Done criteria",
+  copy:"Copy prompt",copied:"Copied ✓",mark:"✓ Mark done",unmark:"↺ Unmark",isDone:"Completed 🎉",ready:"All criteria met — mark it done!",met:"{k}/{n} criteria met",
+  prev:"← Previous",next:"Next →",noDetail:"No details for this item yet.",keys:"<span class=kbd>J</span>/<span class=kbd>K</span> switch task · <span class=kbd>X</span> mark done · <span class=kbd>Esc</span> back to plan"}
+};
+
+const KEY="aiplan.v1";
+let state=JSON.parse(localStorage.getItem(KEY)||'{"c":{},"notes":[{"w":"1","d":"","l":"","n":""}],"hide":false}');
+state.sub=state.sub||{};state.lang=state.lang||"vi";
+const save=()=>{state.ts=Date.now();localStorage.setItem(KEY,JSON.stringify(state));schedulePush()};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const t=k=>T[state.lang][k];
+const EN=()=>state.lang==="en";
+
+// flat indexes
+const allWeeks=[],allItems=[];
+PHASES.forEach(p=>p.weeks_.forEach(w=>{allWeeks.push({...w,ph:p});w.items.forEach((it,i)=>allItems.push({id:`w${w.w}-${i}`,vi:it,i,w,ph:p}))}));
+const byId=Object.fromEntries(allItems.map(x=>[x.id,x]));
+const phName=p=>EN()?PLAN_EN.phases[p.n][0]:p.name;
+const phGoal=p=>EN()?PLAN_EN.phases[p.n][1]:p.goal;
+const wkTitle=w=>EN()?PLAN_EN.weeks[w.w]:w.t;
+const wkRange=p=>{const a=p.weeks_[0].w,b=p.weeks_[p.weeks_.length-1].w;return a===b?`${t("week")} ${a}`:`${t("weeks")} ${a}–${b}`};
+const itTitle=it=>EN()&&DETAILS_EN[it.id]?DETAILS_EN[it.id].title:it.vi;
+const detail=id=>(EN()?DETAILS_EN:DETAILS_VI)[id];
+const isDone=id=>!!state.c[id];
+const wkStat=w=>{const n=w.items.length,d=w.items.filter((_,i)=>isDone(`w${w.w}-${i}`)).length;return{n,d}};
+const currentWeek=()=>allWeeks.find(w=>{const s=wkStat(w);return s.d<s.n});
+
+// ───── PLAN VIEW ─────
+function renderPlan(){
+  const nav=$("#nav"),root=$("#phases");nav.innerHTML="";root.innerHTML="";$("#weeks").innerHTML="";
+  PHASES.forEach(p=>{
+    const col=`var(${p.c})`;
+    nav.insertAdjacentHTML("beforeend",`<a class="nl" href="#ph${p.n}" data-ph="${p.n}"><span class="dot" style="background:${col}"></span>${p.n}. ${esc(phName(p))}<span class="pc" id="npc${p.n}"></span></a>`);
+    let h=`<section class="phase" id="ph${p.n}" style="--c:${col}"><div class="phead"><div class="badge">${p.n}</div><div><h2>${esc(phName(p))}</h2><small>${wkRange(p)} · ${esc(phGoal(p))}</small></div><div class="pbar"><i id="pb${p.n}"></i></div></div><div class="cards">`;
+    p.weeks_.forEach(w=>{
+      h+=`<div class="card" id="w${w.w}" style="--c:${col}"><h3><span class="tag">${t("week").toUpperCase()} ${w.w}</span>${esc(wkTitle(w))}</h3><div class="sub" id="ws${w.w}"></div><ul class="todo">`;
+      w.items.forEach((_,i)=>{const it=byId[`w${w.w}-${i}`];
+        h+=`<li data-id="${it.id}"><div class="row"><input type="checkbox" class="ck" data-id="${it.id}"><a class="it" href="#/item/${it.id}">${esc(itTitle(it))}</a><a class="chev" href="#/item/${it.id}">›</a></div></li>`});
+      h+=`</ul></div>`;
+    });
+    root.insertAdjacentHTML("beforeend",h+"</div></section>");
+  });
+  allWeeks.forEach(w=>$("#weeks").insertAdjacentHTML("beforeend",`<a class="wk" href="#w${w.w}" id="wk${w.w}" style="--c:var(${w.ph.c})" title="${t("week")} ${w.w}: ${esc(wkTitle(w))}"><i></i><span>${w.w}</span></a>`));
+  $("#rhythmGrid").innerHTML=t("rh").map(([a,b,c])=>`<div class="rh"><b>${a}</b><em>${b}</em><p>${c}</p></div>`).join("");
+  $("#dod").innerHTML=t("dod");$("#footer").innerHTML=t("footer");
+  observeNav();updatePlan();
+}
+function updatePlan(){
+  let done=0,total=0,full=0;const now=currentWeek();
+  allWeeks.forEach(w=>{const{n,d}=wkStat(w);done+=d;total+=n;if(d===n)full++;
+    $("#ws"+w.w).textContent=`${d}/${n} ${t("doneOf")}`;
+    const wk=$("#wk"+w.w);wk.style.setProperty("--p",(d/n*100)+"%");wk.classList.toggle("now",w===now);
+    $("#w"+w.w).classList.toggle("now",w===now)});
+  PHASES.forEach(p=>{let d=0,n=0;p.weeks_.forEach(w=>{const s=wkStat(w);d+=s.d;n+=s.n});
+    $("#pb"+p.n).style.setProperty("--p",(d/n*100)+"%");$("#npc"+p.n).textContent=Math.round(d/n*100)+"%"});
+  $("#pct").textContent=Math.round(done/total*100)+"%";
+  $("#arc").style.strokeDashoffset=351.86*(1-done/total);
+  $("#sDone").textContent=done;$("#sLeft").textContent=total-done;$("#sWeeks").textContent=`${full} / 24`;
+  $("#sNow").textContent=now?`${t("week")} ${now.w}`:t("allDone");
+  document.querySelectorAll("#viewPlan li[data-id]").forEach(li=>{const c=isDone(li.dataset.id);li.classList.toggle("done",c);li.querySelector("input").checked=c});
+  $("#hideDone").textContent=state.hide?t("show"):t("hide");$("#hideDone").classList.toggle("on",state.hide);
+  document.body.classList.toggle("hide-done",state.hide);
+}
+let io;
+function observeNav(){
+  io&&io.disconnect();const links=[...document.querySelectorAll("#nav a")];
+  io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle("active",a.dataset.ph===e.target.id.slice(2)))}),{rootMargin:"-30% 0px -60% 0px"});
+  document.querySelectorAll("section[id^=ph]").forEach(s=>io.observe(s));
+}
+document.addEventListener("change",e=>{
+  if(e.target.matches("input[data-id]")){state.c[e.target.dataset.id]=e.target.checked;save();updatePlan()}
+  else if(e.target.dataset.sub){state.sub[e.target.dataset.sub]=e.target.checked;save();renderDetailState()}
+});
+$("#hideDone").onclick=()=>{state.hide=!state.hide;save();updatePlan()};
+$("#jump").onclick=()=>{const n=currentWeek();if(n)$("#w"+n.w).scrollIntoView({behavior:"smooth",block:"center"})};
+$("#reset").onclick=()=>{if(confirm(t("resetQ"))){state.c={};state.sub={};save();updatePlan()}};
+// plan view: in-page anchors (#ph0, #w3) shouldn't trigger routing
+document.addEventListener("click",e=>{
+  const a=e.target.closest('a[href^="#"]');if(!a)return;const h=a.getAttribute("href");
+  if(!h.startsWith("#/")){e.preventDefault();const el=document.querySelector(h);el&&el.scrollIntoView({behavior:"smooth",block:h.startsWith("#w")?"center":"start"})}
+});
+
+// notes
+function renderNotes(){
+  $("#noteBody").innerHTML=state.notes.map((r,i)=>`<tr data-i="${i}"><td contenteditable data-k="w">${esc(r.w)}</td><td contenteditable data-k="d">${esc(r.d)}</td><td contenteditable data-k="l">${esc(r.l)}</td><td contenteditable data-k="n">${esc(r.n)}</td></tr>`).join("");
+}
+$("#noteBody").addEventListener("input",e=>{const td=e.target.closest("td");if(!td)return;state.notes[td.parentNode.dataset.i][td.dataset.k]=td.textContent;save()});
+$("#addNote").onclick=()=>{state.notes.push({w:"",d:"",l:"",n:""});save();renderNotes()};
+
+// ───── DETAIL VIEW ─────
+let curId=null;
+function renderDetail(id){
+  const it=byId[id];curId=id;const d=detail(id),col=`var(${it.ph.c})`,p=it.ph;
+  const vd=$("#viewDetail");vd.style.setProperty("--c",col);
+  // sidebar
+  let s=`<a class="back" href="#/">${t("back")}</a><div class="phc"><div class="badge" style="--c:${col}">${p.n}</div><div><b>${esc(phName(p))}</b><small>${wkRange(p)}</small></div></div>`;
+  p.weeks_.forEach(w=>{s+=`<div class="wkh">${t("week")} ${w.w} · ${esc(wkTitle(w))}</div>`;
+    w.items.forEach((_,i)=>{const x=byId[`w${w.w}-${i}`];s+=`<a class="si${x.id===id?" cur":""}${isDone(x.id)?" ok":""}" href="#/item/${x.id}" data-sid="${x.id}"><span class="st"></span><span>${esc(itTitle(x))}</span></a>`})});
+  $("#dSide").innerHTML=s;
+  // main
+  const idx=allItems.indexOf(it),prv=allItems[idx-1],nxt=allItems[idx+1];
+  let h=`<div class="dhead"><div class="dcrumb">Phase ${p.n} · ${esc(phName(p))} · ${t("week")} ${it.w.w} · ${t("task")} ${it.i+1}/${it.w.items.length}</div>
+    <h1>${esc(itTitle(it))}</h1><div class="meta"><span class="tag">${t("week").toUpperCase()} ${it.w.w}</span>${d&&d.time?`<span class="chip">⏱ ${esc(d.time)}</span>`:""}<span class="chip">${esc(wkTitle(it.w))}</span></div></div>`;
+  if(!d){h+=`<div class="box" style="margin-top:22px">${t("noDetail")}</div>`}
+  else{
+    let L=`<div class="box"><h4>${t("goal")}</h4><div class="goal">${esc(d.goal)}</div></div>`;
+    if(d.learn&&d.learn.length)L+=`<div class="box"><h4>${t("learn")}</h4><ul class="plain">${d.learn.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+    if(d.ai&&d.ai.length)L+=`<div class="box"><h4>${t("ai")}</h4>${d.ai.map(([tool,why,pr],i)=>`<div class="aibox"><div class="aihead"><b>${esc(tool)}</b><span>· ${esc(why)}</span><button data-copy="${i}">${t("copy")}</button></div><pre>${esc(pr)}</pre></div>`).join("")}</div>`;
+    if(d.practice&&d.practice.length)L+=`<div class="box"><h4>${t("practice")}</h4><ol class="steps">${d.practice.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div>`;
+    let Rr=`<div class="box crit"><h4>${t("crit")}</h4><div class="cprog"><i id="cprog"></i></div>${(d.done||[]).map((x,i)=>`<label><input type="checkbox" class="ck round" data-sub="${id}-${i}" ${state.sub[id+"-"+i]?"checked":""}><span>${esc(x)}</span></label>`).join("")}<div class="hint" id="cHint"></div><button class="mark" id="markBtn"></button></div>`;
+    if(d.res&&d.res.length)Rr+=`<div class="box res"><h4>${t("res")}</h4>${d.res.map(([n,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(n)}</a>`).join("")}</div>`;
+    h+=`<div class="dgrid"><div>${L}</div><div class="sticky">${Rr}</div></div>`;
+  }
+  h+=`<div class="pn"><a class="${prv?"":"off"}" href="#/item/${prv?prv.id:""}"><small>${t("prev")}</small><b>${prv?esc(itTitle(prv)):""}</b></a><a class="nx ${nxt?"":"off"}" href="#/item/${nxt?nxt.id:""}"><small>${t("next")}</small><b>${nxt?esc(itTitle(nxt)):""}</b></a></div><div class="keys">${t("keys")}</div>`;
+  $("#dMain").innerHTML=h;
+  $("#dMain").querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>navigator.clipboard.writeText(d.ai[b.dataset.copy][2]).then(()=>{b.textContent=t("copied");b.classList.add("ok");setTimeout(()=>{b.textContent=t("copy");b.classList.remove("ok")},1500)}));
+  const mb=$("#markBtn");if(mb)mb.onclick=toggleCur;
+  $("#topCrumbs").textContent=`Phase ${p.n} › ${t("week")} ${it.w.w} › ${itTitle(it)}`;
+  renderDetailState();
+  const cur=$("#dSide .cur");cur&&cur.scrollIntoView({block:"nearest"});
+}
+function renderDetailState(){
+  if(!curId)return;const d=detail(curId),done=isDone(curId);
+  const n=d&&d.done?d.done.length:0,k=n?d.done.filter((_,i)=>state.sub[curId+"-"+i]).length:0;
+  const cp=$("#cprog");cp&&cp.style.setProperty("--p",(done?100:n?k/n*100:0)+"%");
+  const hn=$("#cHint");if(hn)hn.textContent=done?t("isDone"):n?(k===n?t("ready"):t("met").replace("{k}",k).replace("{n}",n)):"";
+  const mb=$("#markBtn");if(mb){mb.textContent=done?t("unmark"):t("mark");mb.classList.toggle("is-done",done)}
+  const si=$(`#dSide [data-sid="${curId}"]`);si&&si.classList.toggle("ok",done);
+}
+function toggleCur(){if(!curId)return;state.c[curId]=!isDone(curId);save();renderDetailState();updatePlan()}
+
+// ───── SYNC (GitHub Gist) ─────
+const SK="aiplan.sync",FILE="ai-engineering-plan.json";
+let sync=JSON.parse(localStorage.getItem(SK)||"{}"),pt;
+const saveSync=()=>localStorage.setItem(SK,JSON.stringify(sync));
+function setSync(s,msg){$("#syncBtn").dataset.s=s;$("#syncBtn").title=msg||"";$("#syncMsg").textContent=msg||""}
+const gh=(path,opt={})=>fetch("https://api.github.com"+path,{...opt,headers:{Authorization:"Bearer "+sync.token,Accept:"application/vnd.github+json","Content-Type":"application/json"}})
+  .then(async r=>{if(!r.ok)throw new Error(r.status+" "+r.statusText);return r.json()});
+const payload=()=>JSON.stringify({ts:state.ts||0,c:state.c,sub:state.sub,notes:state.notes});
+async function findOrCreate(){
+  const list=await gh("/gists?per_page=100");
+  const g=list.find(x=>x.files&&x.files[FILE]);if(g)return g.id;
+  return (await gh("/gists",{method:"POST",body:JSON.stringify({description:"AI Engineering plan progress",public:false,files:{[FILE]:{content:payload()}}})})).id;
+}
+async function push(){
+  if(!sync.token||!sync.gist)return;setSync("busy",t("syncBusy"));
+  try{await gh("/gists/"+sync.gist,{method:"PATCH",body:JSON.stringify({files:{[FILE]:{content:payload()}}})});setSync("ok",t("syncOk"))}
+  catch(e){setSync("err",t("syncErr")+e.message)}
+}
+function schedulePush(){if(!sync.token)return;clearTimeout(pt);pt=setTimeout(push,1500)}
+async function pull(){
+  if(!sync.token)return;setSync("busy",t("syncBusy"));
+  try{
+    if(!sync.gist){state.ts=state.ts||Date.now();sync.gist=await findOrCreate();saveSync()}
+    const g=await gh("/gists/"+sync.gist),f=g.files[FILE];
+    if(!f)throw new Error("gist file missing");
+    const r=JSON.parse(f.truncated?await (await fetch(f.raw_url)).text():f.content);
+    if((r.ts||0)>(state.ts||0)){
+      state.c=r.c||{};state.sub=r.sub||{};state.notes=r.notes||state.notes;state.ts=r.ts;
+      localStorage.setItem(KEY,JSON.stringify(state));renderNotes();updatePlan();if(curId)renderDetail(curId);
+    }else if((r.ts||0)<(state.ts||0))return push();
+    setSync("ok",t("syncOk"));
+  }catch(e){setSync("err",t("syncErr")+e.message)}
+}
+$("#syncBtn").onclick=()=>{$("#syncDesc").innerHTML=t("syncDesc");$("#syncToken").value=sync.token?"••••••••••••":"";$("#syncDlg").showModal()};
+$("#syncClose").onclick=()=>$("#syncDlg").close();
+$("#syncConnect").onclick=async()=>{
+  const v=$("#syncToken").value.trim();
+  if(!v||v.startsWith("•")){if(!sync.token){$("#syncMsg").textContent=t("syncNeed");return}}
+  else{sync={token:v};saveSync()}
+  await pull();
+};
+$("#syncNow").onclick=()=>pull();
+$("#syncOff").onclick=()=>{sync={};saveSync();$("#syncToken").value="";setSync("off","")};
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&sync.token)pull()});
+setInterval(()=>{if(!document.hidden&&sync.token&&!pt)pull()},20000);
+
+// ───── ROUTER + LANG ─────
+let lastId=null;
+function route(){
+  const m=location.hash.match(/^#\/item\/(w\d+-\d+)$/);
+  if(m&&byId[m[1]]){
+    $("#viewPlan").hidden=true;$("#viewDetail").hidden=false;renderDetail(m[1]);lastId=m[1];
+    window.scrollTo({top:0,behavior:"instant"});
+  }else{
+    curId=null;$("#viewDetail").hidden=true;$("#viewPlan").hidden=false;$("#topCrumbs").textContent="";
+    if(lastId){const li=document.querySelector(`#viewPlan li[data-id="${lastId}"]`);
+      if(li){li.scrollIntoView({block:"center",behavior:"instant"});li.classList.remove("flash");void li.offsetWidth;li.classList.add("flash")}}
+  }
+}
+function applyLang(){
+  document.documentElement.lang=state.lang;
+  document.querySelectorAll("[data-t]").forEach(el=>el.textContent=t(el.dataset.t));
+  document.querySelectorAll("#langSeg button").forEach(b=>b.classList.toggle("on",b.dataset.lang===state.lang));
+  renderPlan();if(curId)renderDetail(curId);
+}
+$("#langSeg").onclick=e=>{const b=e.target.closest("button");if(!b||b.dataset.lang===state.lang)return;state.lang=b.dataset.lang;save();applyLang()};
+window.addEventListener("hashchange",route);
+document.addEventListener("keydown",e=>{
+  if(e.target.isContentEditable||e.ctrlKey||e.metaKey||e.altKey||!curId)return;
+  const i=allItems.indexOf(byId[curId]);
+  if(e.key==="Escape")location.hash="#/";
+  else if(e.key==="j"&&allItems[i+1])location.hash="#/item/"+allItems[i+1].id;
+  else if(e.key==="k"&&allItems[i-1])location.hash="#/item/"+allItems[i-1].id;
+  else if(e.key==="x")toggleCur();
+});
+
+renderNotes();applyLang();route();
+if(sync.token)pull();
+</script>
+</body>
+</html>
