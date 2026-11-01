@@ -561,7 +561,7 @@ async function push(){
   try{await gh("/gists/"+sync.gist,{method:"PATCH",body:JSON.stringify({files:{[FILE]:{content:payload()}}})});setSync("ok",t("syncOk"))}
   catch(e){setSync("err",t("syncErr")+e.message)}
 }
-function schedulePush(){if(!sync.token)return;clearTimeout(pt);pt=setTimeout(push,1500)}
+function schedulePush(){if(!sync.token)return;clearTimeout(pt);pt=setTimeout(()=>{pt=0;push()},1500)}
 async function pull(){
   if(!sync.token)return;setSync("busy",t("syncBusy"));
   try{
