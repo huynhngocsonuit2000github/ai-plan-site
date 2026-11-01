@@ -296,7 +296,7 @@ const PHASES=[
    "Export workflow vào automation/ và viết test cho schema"]}]},
  {n:3,code:"G3",name:"Tự động hoá code",c:"--p3",goal:"Ticket đã duyệt → branch → Claude Code → PR",weeks_:[
   {w:6,t:"Phát hiện ticket & chuẩn bị branch",items:[
-   "Polling Jira lấy ticket 'Đã duyệt' bằng Schedule trigger",
+   "Polling Jira lấy ticket 'Approved' bằng Schedule trigger",
    "Clone sạch workspace và tạo branch đúng quy tắc (idempotent)"]},
   {w:7,t:"Chạy Claude Code & mở PR",items:[
    "Dựng prompt từ ticket và chạy Claude Code CLI qua n8n",
@@ -335,7 +335,7 @@ const T={
   sDone:"việc đã xong",sLeft:"việc còn lại",sWeeks:"mốc hoàn thành",sNow:"mốc hiện tại",timeline:"12 mốc",
   hide:"Ẩn việc đã xong",show:"Hiện việc đã xong",jump:"Đến mốc hiện tại",reset:"Reset tiến độ",resetQ:"Xóa toàn bộ tiến độ?",
   rhythmTitle:"Flow đích",rhythmSub:"⛔ là điểm duyệt của người",
-  rh:[["Requirement","Product Owner","Nhập tay (email để sau)"],["Tạo ticket","n8n + ChatGPT API","Ticket Jira, trạng thái Chờ duyệt"],["⛔ Duyệt ticket","Product Owner","Trên Jira"],["Code + PR","n8n + Claude Code CLI","Branch ai/…, PR đúng template"],["Review","n8n + Claude Code CLI","Comment review đúng mẫu"],["⛔ Approve PR","Product Owner","PR review Approved trên GitHub"],["Merge + Deploy Dev","n8n","Smoke test, rollback nếu fail"],["⛔ Duyệt Production","Product Owner","Trước khi deploy Production"]],
+  rh:[["Requirement","Product Owner","Nhập tay (email để sau)"],["Tạo ticket","n8n + ChatGPT API","Ticket Jira, trạng thái Pending approval"],["⛔ Duyệt ticket","Product Owner","Trên Jira"],["Code + PR","n8n + Claude Code CLI","Branch ai/…, PR đúng template"],["Review","n8n + Claude Code CLI","Comment review đúng mẫu"],["⛔ Approve PR","Product Owner","PR review Approved trên GitHub"],["Merge + Deploy Dev","n8n","Smoke test, rollback nếu fail"],["⛔ Duyệt Production","Product Owner","Trước khi deploy Production"]],
   dod:"<b>Nguyên tắc:</b> hợp đồng trước, tự động hoá sau · chạy tay một vòng rồi mới viết automation · mọi bước chạy lại an toàn · mọi run có run ID.",
   notesTitle:"Learning notes log",notesSub:"Click ô để sửa — tự lưu trong trình duyệt",thWeek:"Mốc",thDate:"Ngày",thLink:"Link note",thNote:"Ghi chú",addRow:"+ Thêm dòng",
   footer:'Nguồn: docs/roadmap.md trong repo ai-task-management · Tiến độ lưu trong localStorage của trình duyệt này · Click tên việc để mở trang chi tiết.',
