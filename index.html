@@ -55,7 +55,7 @@ main{padding:32px 36px 90px;min-width:0}
 .stat span{font-size:12px;color:var(--mute)}
 .timeline{margin:22px 0 6px}
 .lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:0 0 10px;font-weight:600}
-.weeks{display:grid;grid-template-columns:repeat(24,1fr);gap:5px}
+.weeks{display:grid;grid-template-columns:repeat(var(--n,12),1fr);gap:8px;max-width:760px}
 .wk{aspect-ratio:1;border-radius:7px;background:var(--panel2);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s}
 .wk:hover{transform:translateY(-2px)}
 .wk i{position:absolute;left:0;bottom:0;height:var(--p,0%);width:100%;background:var(--c);opacity:.55}
@@ -203,9 +203,9 @@ dialog .msg{font-size:12.5px;margin-top:10px;color:var(--mute)}
 <main>
   <div class="hero">
     <div>
-      <h1>Build an Autonomous AI Scrum Team</h1>
+      <h1 data-t="title"></h1>
       <p data-t="heroDesc"></p>
-      <div class="chips"><span class="chip" data-t="c1"></span><span class="chip" data-t="c2"></span><span class="chip" data-t="c3"></span><span class="chip">Capstone: Task Management</span></div>
+      <div class="chips"><span class="chip" data-t="c1"></span><span class="chip" data-t="c2"></span><span class="chip" data-t="c3"></span><span class="chip">social-media: .NET + Angular + Docker</span></div>
     </div>
     <div class="ring">
       <svg width="132" height="132" viewBox="0 0 132 132">
@@ -268,155 +268,101 @@ dialog .msg{font-size:12.5px;margin-top:10px;color:var(--mute)}
   <div class="msg" id="syncMsg"></div>
 </dialog>
 
-<script src="study-plan-details.js"></script>
-<script src="study-plan-details.en.js"></script>
+<script src="plan-vi.js"></script>
+<script src="plan-en.js"></script>
 <script>
 const PHASES=[
- {n:0,name:"Foundation",c:"--p0",goal:"Repo, vision, AI engineering standards",weeks_:[
-  {w:1,t:"Nền tảng & môi trường",items:[
-   "Học: Model vs Agent vs Tool vs Workflow",
-   "Học: model-agnostic architecture, Git/GitHub collaboration",
-   "Cài/đăng ký: Claude Code, Antigravity, Gemini, ChatGPT, GitHub, Jira, Confluence, Docker",
-   "Tạo repo ai-task-management (cấu trúc theo roadmap)",
-   "Viết docs/vision.md và docs/architecture.md",
-   "Viết AI Engineering standards trong ai-engineering/standards/",
-   "Claude Code đọc shared context (CLAUDE.md trỏ về standards)",
-   "Antigravity dùng cùng standards",
-   "Chạy cùng 1 task nhỏ ở cả 2 tool, so sánh kết quả",
-   "Learning note tuần 1 + commit"]}]},
- {n:1,name:"LLM fundamentals & prompt engineering",c:"--p1",goal:"Multi-model requirement analyzer",weeks_:[
-  {w:2,t:"Lý thuyết + prototype",items:[
-   "Học: tokenization, context window, temperature, system prompt, hallucination",
-   "Học: structured output (JSON schema), tool/function calling",
-   "Tạo .NET project RequirementAnalyzer, định nghĩa ILlmProvider",
-   "Implement provider đầu tiên (Claude hoặc Gemini)",
-   "Output JSON theo schema (projectName, features, missingRequirements, questions)",
-   "Test: schema validation"]},
-  {w:3,t:"Multi-provider + so sánh",items:[
-   "Implement provider thứ 2 và 3",
-   "Chạy cùng bộ requirement qua 3 model",
-   "So sánh: accuracy, missing-info detection, JSON validity, latency/cost",
-   "Viết bảng so sánh + note + commit"]}]},
- {n:2,name:"Context engineering & RAG",c:"--p2",goal:"Project knowledge system",weeks_:[
-  {w:4,t:"Dựng knowledge base",items:[
-   "Học: context management, memory ngắn/dài hạn, embeddings, RAG, chunking",
-   "Tạo knowledge/ (6 file theo roadmap)",
-   "Điền nội dung thật cho PROJECT_CONTEXT, BUSINESS_RULES"]},
-  {w:5,t:"Hoàn thiện & kiểm thử truy vấn",items:[
-   "Điền CODING_STANDARDS, DATABASE_DESIGN, API_CONTRACTS, ARCHITECTURE_DECISIONS",
-   "Hỏi agent 5 câu mẫu (architecture, task states, Done conditions, APIs, authz)",
-   "Đánh giá độ chính xác; chỉ thêm vector DB nếu thật sự cần",
-   "Note + commit"]}]},
- {n:3,name:"AI Agent engineering",c:"--p3",goal:"BA, Architect, Developer agents",weeks_:[
-  {w:6,t:"Business Analyst agent",items:[
-   "Học: agent architecture, tools & permissions, skills, ReAct, HITL",
-   "Viết role spec + I/O contract: BA Agent",
-   "Chạy BA agent, kiểm tra output (stories, AC, rules, questions)"]},
-  {w:7,t:"Solution Architect agent",items:[
-   "Role spec + contract: Architect Agent",
-   "Chạy với output đã duyệt của BA"]},
-  {w:8,t:"Developer agent",items:[
-   "Role spec + contract: Developer Agent",
-   "Chạy Developer role bằng cả Claude Code và Antigravity",
-   "Xác nhận spec không phụ thuộc tool",
-   "Note + commit"]}]},
- {n:4,name:"MCP & tool integration",c:"--p4",goal:"Agents kết nối Jira, Confluence, GitHub",weeks_:[
-  {w:9,t:"MCP cơ bản",items:[
-   "Học: MCP architecture, client/server, tools/resources/prompts, OAuth",
-   "Kết nối Filesystem + GitHub MCP (read-only trước)"]},
-  {w:10,t:"Jira + Confluence",items:[
-   "Kết nối Jira + Confluence MCP",
-   "Bài tập: BA đọc requirement → stories → Jira Epic/tasks → trang Confluence",
-   "Rà soát least-privilege, audit log",
-   "Note + commit"]}]},
- {n:5,name:"Multi-agent architecture",c:"--p5",goal:"Workflow 4 agent với shared state",weeks_:[
-  {w:11,t:"Pattern & chọn framework",items:[
-   "Học: supervisor, handoff, parallel, shared state",
-   "Đọc nhanh MS Agent Framework, LangGraph, Semantic Kernel, ADK → chọn 1"]},
-  {w:12,t:"Supervisor + BA → Architect",items:[
-   "Dựng Scrum Master/Supervisor + shared state persisted",
-   "Nối BA → Architect"]},
-  {w:13,t:"Developer + QA",items:[
-   "Thêm Developer + QA, dependency rules (approval gate, BE/FE song song)",
-   "Demo workflow 4 agent + note + commit"]}]},
- {n:6,name:"Workflow automation",c:"--p6",goal:"Requirement-to-delivery workflow",weeks_:[
-  {w:14,t:"Nền tảng workflow",items:[
-   "Học: event-driven, state machine, idempotency, retry/timeout, webhook",
-   "Chọn công cụ (Worker Service / Hangfire / n8n) — chỉ cái cần thiết"]},
-  {w:15,t:"Requirement → PR",items:[
-   "Luồng: Requirement → BA → Approval → Architect → Jira → SM → Dev → PR"]},
-  {w:16,t:"PR → Docs",items:[
-   "Reviewer → QA → Deploy Dev → Smoke test → Docs agent → Jira/Confluence",
-   "Chạy end-to-end không copy/paste thủ công",
-   "Note + commit"]}]},
- {n:7,name:"Evaluation & observability",c:"--p7",goal:"Dataset, metrics, traces",weeks_:[
-  {w:17,t:"Dataset đánh giá",items:[
-   "Học: golden dataset, regression, traces/spans, cost tracking",
-   "Tạo 30–50 requirement mẫu + tiêu chí chấm"]},
-  {w:18,t:"Chạy eval + tracing",items:[
-   "Chạy nhiều tổ hợp model/tool cho BA, đo 5 metric",
-   "Tích hợp OpenTelemetry/Langfuse",
-   "Báo cáo chọn model theo bằng chứng"]}]},
- {n:8,name:"Production AI engineering",c:"--p8",goal:"Docker deployment an toàn, quan sát được",weeks_:[
-  {w:19,t:"Bảo mật & container",items:[
-   "Học: secrets, RBAC, sandbox, rate limit, cost optimization",
-   "Dockerfile cho frontend, API, agent-worker"]},
-  {w:20,t:"Compose & cô lập",items:[
-   "docker-compose: postgres, redis, langfuse, n8n",
-   "Cô lập workspace agent, scope quyền"]},
-  {w:21,t:"CI/CD & vận hành",items:[
-   "CI/CD, rollback, runbook phục hồi, human approval cho prod",
-   "Note + commit"]}]},
- {n:9,name:"Capstone: Autonomous AI Scrum Team",c:"--p9",goal:"Giao Task Management app end-to-end",weeks_:[
-  {w:22,t:"Từ yêu cầu đến sprint plan",items:[
-   "Chạy request mẫu: phân tích → clarify → Jira/Confluence → thiết kế → sprint plan"]},
-  {w:23,t:"Implement & review",items:[
-   "Dev agents làm backend + frontend → review PR → test → fix bug"]},
-  {w:24,t:"Deploy & nghiệm thu",items:[
-   "Docker build → deploy Dev → smoke → release notes → email report",
-   "Nghiệm thu: traceability end-to-end",
-   "Nghiệm thu: thay Claude Code ↔ Antigravity không đổi workflow",
-   "Nghiệm thu: thay model cho BA role",
-   "Nghiệm thu: eval phát hiện thay đổi chất lượng",
-   "Nghiệm thu: deploy prod cần human approval"]}]}
+ {n:1,code:"G1",name:"Chạy tay một vòng",c:"--p1",goal:"Chốt hợp đồng bằng cách đi hết flow bằng tay",weeks_:[
+  {w:1,t:"Chuẩn bị nền tảng",items:[
+   "Tạo Jira project, Confluence space và repo social-media (bảo vệ nhánh chính)",
+   "Cài và chạy thử Claude Code CLI ở chế độ non-interactive",
+   "Học: flow glue, artifact có cấu trúc, run ID, idempotency, điểm duyệt"]},
+  {w:2,t:"Viết hợp đồng",items:[
+   "Viết ticket template + quy tắc mã ticket và run ID",
+   "Chốt quy tắc branch/commit/tiêu đề PR + viết PR template",
+   "Viết mẫu review, mẫu approve, mẫu trang Confluence + standards cho Claude Code"]},
+  {w:3,t:"Chạy tay một vòng",items:[
+   "Requirement mẫu → ChatGPT sinh ticket → tạo trên Jira → duyệt",
+   "Claude Code CLI code trên branch → push → mở PR",
+   "Claude Code review (phiên riêng) → approve trên GitHub → merge",
+   "Tạo trang log Confluence cho run + viết g1-retro.md"]}]},
+ {n:2,code:"G2",name:"Tự động hoá tạo ticket",c:"--p2",goal:"Requirement → ChatGPT API → ticket Jira",weeks_:[
+  {w:4,t:"Dựng n8n",items:[
+   "Học n8n cơ bản và chạy n8n bằng Docker Compose",
+   "Tạo credential Jira và OpenAI trong n8n an toàn"]},
+  {w:5,t:"Workflow tạo ticket",items:[
+   "Trigger thủ công + gọi ChatGPT API trả JSON theo schema",
+   "Validate JSON, tạo ticket Jira kèm run ID, chạy lại không trùng",
+   "Export workflow vào automation/ và viết test cho schema"]}]},
+ {n:3,code:"G3",name:"Tự động hoá code",c:"--p3",goal:"Ticket đã duyệt → branch → Claude Code → PR",weeks_:[
+  {w:6,t:"Phát hiện ticket & chuẩn bị branch",items:[
+   "Polling Jira lấy ticket 'Đã duyệt' bằng Schedule trigger",
+   "Clone sạch workspace và tạo branch đúng quy tắc (idempotent)"]},
+  {w:7,t:"Chạy Claude Code & mở PR",items:[
+   "Dựng prompt từ ticket và chạy Claude Code CLI qua n8n",
+   "Chạy test (dotnet/ng), commit, push, mở PR, ghi link PR vào ticket",
+   "Xử lý test fail và chạy lại không tạo branch/PR trùng"]}]},
+ {n:4,code:"G4",name:"Tự động hoá review",c:"--p4",goal:"PR → Claude Code review → comment",weeks_:[
+  {w:8,t:"Review tự động",items:[
+   "Polling GitHub tìm PR mới do automation tạo",
+   "Chạy Claude Code review (phiên riêng) và đăng comment đúng mẫu",
+   "Không đăng review trùng; token review không có quyền merge"]}]},
+ {n:5,code:"G5",name:"Ghép toàn bộ",c:"--p5",goal:"Approve, merge, run ID, retry, end-to-end",weeks_:[
+  {w:9,t:"Approve & merge",items:[
+   "Phát hiện approve trên GitHub và kiểm tra danh tính người duyệt",
+   "Merge tự động sau approve; chặn thử khi chưa approve"]},
+  {w:10,t:"Ghép & độ tin cậy",items:[
+   "Run ID xuyên suốt + trang Confluence tự cập nhật",
+   "Retry, timeout, error workflow và thông báo",
+   "Chạy end-to-end với đúng 2 lần can thiệp"]}]},
+ {n:6,code:"G6",name:"Deploy Dev, smoke test, rollback",c:"--p6",goal:"PR đã merge → Dev → smoke test → rollback, cổng Production",weeks_:[
+  {w:11,t:"Deploy Dev",items:[
+   "Build Docker image cho .NET API và Angular",
+   "Deploy lên Dev (chốt nơi chạy)",
+   "Viết và chạy smoke test sau deploy"]},
+  {w:12,t:"Rollback & Production",items:[
+   "Rollback tự động khi smoke test fail",
+   "Chặn deploy Production khi chưa duyệt + viết runbook"]}]}
 ];
 
 const T={
  vi:{sync:"Đồng bộ",syncTitle:"Đồng bộ qua GitHub Gist",syncConnect:"Kết nối",syncNow:"Đồng bộ ngay",syncOff:"Ngắt kết nối",close:"Đóng",
   syncDesc:'Dán GitHub token (classic) có quyền <b>gist</b>. <a href="https://github.com/settings/tokens/new?scopes=gist&description=ai-plan-sync" target="_blank" rel="noopener">Tạo token ↗</a>. Làm tương tự trên mọi thiết bị, dùng cùng 1 token. Tiến độ lưu trong 1 secret gist của bạn.',
   syncOk:"Đã đồng bộ",syncBusy:"Đang đồng bộ…",syncErr:"Lỗi đồng bộ: ",syncNeed:"Hãy dán token trước.",
-  brand:"AI Engineering Plan",heroDesc:"Lộ trình 24 tuần học AI Engineering: từ LLM cơ bản đến hệ thống multi-agent model-agnostic giao một ứng dụng .NET + Angular.",
-  c1:"24 tuần",c2:"8–12 giờ/tuần",c3:"30% học · 50% làm · 20% đánh giá",complete:"hoàn thành",
-  sDone:"việc đã xong",sLeft:"việc còn lại",sWeeks:"tuần hoàn thành",sNow:"tuần hiện tại",timeline:"Timeline 24 tuần",
-  hide:"Ẩn việc đã xong",show:"Hiện việc đã xong",jump:"Đến tuần hiện tại",reset:"Reset tiến độ",resetQ:"Xóa toàn bộ tiến độ?",
-  rhythmTitle:"Nhịp mỗi tuần",rhythmSub:"Mẫu ~10 giờ",
-  rh:[["Học 1","2h","Đọc docs/khái niệm"],["Làm 1","2–3h","Implement phần chính"],["Làm 2","2–3h","Implement tiếp / thử nghiệm"],["Học 2","1h","Đào sâu phần chưa hiểu"],["Đánh giá","1–2h","Test, đo, so sánh"],["Ghi chú","1h","Learning note + commit/PR"]],
-  dod:"<b>Definition of done mỗi tuần:</b> 1 concept hiểu · 1 feature/experiment chạy · ≥1 test/eval · 1 learning note · 1 commit/PR.",
-  notesTitle:"Learning notes log",notesSub:"Click ô để sửa — tự lưu trong trình duyệt",thWeek:"Tuần",thDate:"Ngày",thLink:"Link note",thNote:"Ghi chú",addRow:"+ Thêm dòng",
-  footer:'Nguồn: <a href="ai-engineering-roadmap.md">ai-engineering-roadmap.md</a> · Tiến độ lưu trong localStorage của trình duyệt này · Click tên việc để mở trang chi tiết.',
-  week:"Tuần",weeks:"Tuần",doneOf:"hoàn thành",allDone:"Xong 🎉",
+  brand:"AI Engineering Plan",title:"Nối công cụ AI thành flow giao phần mềm",
+  heroDesc:"Chạy tay một vòng để chốt hợp đồng, rồi tự động hoá từng bước bằng n8n, ChatGPT API, Claude Code CLI và Jira/Confluence/GitHub. Dự án học: social-media (.NET + Angular + Docker).",
+  c1:"6 giai đoạn · 12 mốc",c2:"Chạy tay trước, tự động sau",c3:"3 điểm duyệt của người",complete:"hoàn thành",
+  sDone:"việc đã xong",sLeft:"việc còn lại",sWeeks:"mốc hoàn thành",sNow:"mốc hiện tại",timeline:"12 mốc",
+  hide:"Ẩn việc đã xong",show:"Hiện việc đã xong",jump:"Đến mốc hiện tại",reset:"Reset tiến độ",resetQ:"Xóa toàn bộ tiến độ?",
+  rhythmTitle:"Flow đích",rhythmSub:"⛔ là điểm duyệt của người",
+  rh:[["Requirement","Product Owner","Nhập tay (email để sau)"],["Tạo ticket","n8n + ChatGPT API","Ticket Jira, trạng thái Chờ duyệt"],["⛔ Duyệt ticket","Product Owner","Trên Jira"],["Code + PR","n8n + Claude Code CLI","Branch ai/…, PR đúng template"],["Review","n8n + Claude Code CLI","Comment review đúng mẫu"],["⛔ Approve PR","Product Owner","PR review Approved trên GitHub"],["Merge + Deploy Dev","n8n","Smoke test, rollback nếu fail"],["⛔ Duyệt Production","Product Owner","Trước khi deploy Production"]],
+  dod:"<b>Nguyên tắc:</b> hợp đồng trước, tự động hoá sau · chạy tay một vòng rồi mới viết automation · mọi bước chạy lại an toàn · mọi run có run ID.",
+  notesTitle:"Learning notes log",notesSub:"Click ô để sửa — tự lưu trong trình duyệt",thWeek:"Mốc",thDate:"Ngày",thLink:"Link note",thNote:"Ghi chú",addRow:"+ Thêm dòng",
+  footer:'Nguồn: docs/roadmap.md trong repo ai-task-management · Tiến độ lưu trong localStorage của trình duyệt này · Click tên việc để mở trang chi tiết.',
+  week:"Mốc",weeks:"Mốc",doneOf:"hoàn thành",allDone:"Xong 🎉",
   back:"← Về lộ trình",task:"Việc",goal:"Mục tiêu",learn:"Cần tìm hiểu",ai:"Học / làm với AI nào",res:"Tài liệu",practice:"Thực hành",crit:"Tiêu chí hoàn thành",
   copy:"Copy prompt",copied:"Đã copy ✓",mark:"✓ Mark done",unmark:"↺ Bỏ đánh dấu",isDone:"Đã hoàn thành 🎉",ready:"Đủ tiêu chí — mark done thôi!",met:"Đạt {k}/{n} tiêu chí",
   prev:"← Việc trước",next:"Việc sau →",noDetail:"Chưa có chi tiết cho mục này.",keys:"<span class=kbd>J</span>/<span class=kbd>K</span> chuyển việc · <span class=kbd>X</span> mark done · <span class=kbd>Esc</span> về lộ trình"},
  en:{sync:"Sync",syncTitle:"Sync via GitHub Gist",syncConnect:"Connect",syncNow:"Sync now",syncOff:"Disconnect",close:"Close",
   syncDesc:'Paste a GitHub (classic) token with the <b>gist</b> scope. <a href="https://github.com/settings/tokens/new?scopes=gist&description=ai-plan-sync" target="_blank" rel="noopener">Create token ↗</a>. Do the same on every device with the same token. Progress is stored in one secret gist of yours.',
   syncOk:"Synced",syncBusy:"Syncing…",syncErr:"Sync error: ",syncNeed:"Paste a token first.",
-  brand:"AI Engineering Plan",heroDesc:"A 24-week AI Engineering roadmap: from LLM fundamentals to a model-agnostic multi-agent system that delivers a .NET + Angular app.",
-  c1:"24 weeks",c2:"8–12 h/week",c3:"30% learn · 50% build · 20% evaluate",complete:"complete",
-  sDone:"tasks done",sLeft:"tasks left",sWeeks:"weeks complete",sNow:"current week",timeline:"24-week timeline",
-  hide:"Hide completed",show:"Show completed",jump:"Go to current week",reset:"Reset progress",resetQ:"Clear all progress?",
-  rhythmTitle:"Weekly rhythm",rhythmSub:"~10 h template",
-  rh:[["Learn 1","2h","Read docs/concepts"],["Build 1","2–3h","Implement the main part"],["Build 2","2–3h","Keep building / experiment"],["Learn 2","1h","Dig into what's unclear"],["Evaluate","1–2h","Test, measure, compare"],["Notes","1h","Learning note + commit/PR"]],
-  dod:"<b>Weekly definition of done:</b> 1 concept understood · 1 working feature/experiment · ≥1 test/eval · 1 learning note · 1 commit/PR.",
-  notesTitle:"Learning notes log",notesSub:"Click a cell to edit — saved in your browser",thWeek:"Week",thDate:"Date",thLink:"Note link",thNote:"Notes",addRow:"+ Add row",
-  footer:'Source: <a href="ai-engineering-roadmap.md">ai-engineering-roadmap.md</a> · Progress is stored in this browser\'s localStorage · Click a task to open its detail page.',
-  week:"Week",weeks:"Weeks",doneOf:"done",allDone:"All done 🎉",
+  brand:"AI Engineering Plan",title:"Glue AI tools into a software delivery flow",
+  heroDesc:"Run one loop by hand to settle the contracts, then automate each step with n8n, the ChatGPT API, Claude Code CLI and Jira/Confluence/GitHub. Learning project: social-media (.NET + Angular + Docker).",
+  c1:"6 stages · 12 milestones",c2:"Manual first, automate after",c3:"3 human gates",complete:"complete",
+  sDone:"tasks done",sLeft:"tasks left",sWeeks:"milestones complete",sNow:"current milestone",timeline:"12 milestones",
+  hide:"Hide completed",show:"Show completed",jump:"Go to current milestone",reset:"Reset progress",resetQ:"Clear all progress?",
+  rhythmTitle:"Target flow",rhythmSub:"⛔ marks a human gate",
+  rh:[["Requirement","Product Owner","Entered by hand (email later)"],["Create ticket","n8n + ChatGPT API","Jira ticket, Pending approval"],["⛔ Approve ticket","Product Owner","In Jira"],["Code + PR","n8n + Claude Code CLI","Branch ai/…, PR in template"],["Review","n8n + Claude Code CLI","Review comment in template"],["⛔ Approve PR","Product Owner","Approved PR review on GitHub"],["Merge + Deploy Dev","n8n","Smoke test, rollback on failure"],["⛔ Approve Production","Product Owner","Before the Production deploy"]],
+  dod:"<b>Principles:</b> contracts first, automation after · run one loop by hand before writing automation · every step safe to re-run · every run has a run ID.",
+  notesTitle:"Learning notes log",notesSub:"Click a cell to edit — saved in your browser",thWeek:"Milestone",thDate:"Date",thLink:"Note link",thNote:"Notes",addRow:"+ Add row",
+  footer:'Source: docs/roadmap.md in the ai-task-management repo · Progress is stored in this browser\'s localStorage · Click a task to open its detail page.',
+  week:"Milestone",weeks:"Milestones",doneOf:"done",allDone:"All done 🎉",
   back:"← Back to plan",task:"Task",goal:"Goal",learn:"What to learn",ai:"Which AI to use",res:"Resources",practice:"Practice",crit:"Done criteria",
   copy:"Copy prompt",copied:"Copied ✓",mark:"✓ Mark done",unmark:"↺ Unmark",isDone:"Completed 🎉",ready:"All criteria met — mark it done!",met:"{k}/{n} criteria met",
   prev:"← Previous",next:"Next →",noDetail:"No details for this item yet.",keys:"<span class=kbd>J</span>/<span class=kbd>K</span> switch task · <span class=kbd>X</span> mark done · <span class=kbd>Esc</span> back to plan"}
 };
 
-const KEY="aiplan.v1";
+const KEY="aiplan.v2";
 let state=JSON.parse(localStorage.getItem(KEY)||'{"c":{},"notes":[{"w":"1","d":"","l":"","n":""}],"hide":false}');
 state.sub=state.sub||{};state.lang=state.lang||"vi";
 const save=()=>{state.ts=Date.now();localStorage.setItem(KEY,JSON.stringify(state));schedulePush()};
@@ -441,11 +387,11 @@ const currentWeek=()=>allWeeks.find(w=>{const s=wkStat(w);return s.d<s.n});
 
 // ───── PLAN VIEW ─────
 function renderPlan(){
-  const nav=$("#nav"),root=$("#phases");nav.innerHTML="";root.innerHTML="";$("#weeks").innerHTML="";
+  const nav=$("#nav"),root=$("#phases");nav.innerHTML="";root.innerHTML="";$("#weeks").innerHTML="";$("#weeks").style.setProperty("--n",allWeeks.length);
   PHASES.forEach(p=>{
     const col=`var(${p.c})`;
-    nav.insertAdjacentHTML("beforeend",`<a class="nl" href="#ph${p.n}" data-ph="${p.n}"><span class="dot" style="background:${col}"></span>${p.n}. ${esc(phName(p))}<span class="pc" id="npc${p.n}"></span></a>`);
-    let h=`<section class="phase" id="ph${p.n}" style="--c:${col}"><div class="phead"><div class="badge">${p.n}</div><div><h2>${esc(phName(p))}</h2><small>${wkRange(p)} · ${esc(phGoal(p))}</small></div><div class="pbar"><i id="pb${p.n}"></i></div></div><div class="cards">`;
+    nav.insertAdjacentHTML("beforeend",`<a class="nl" href="#ph${p.n}" data-ph="${p.n}"><span class="dot" style="background:${col}"></span>${p.code} · ${esc(phName(p))}<span class="pc" id="npc${p.n}"></span></a>`);
+    let h=`<section class="phase" id="ph${p.n}" style="--c:${col}"><div class="phead"><div class="badge">${p.code}</div><div><h2>${esc(phName(p))}</h2><small>${wkRange(p)} · ${esc(phGoal(p))}</small></div><div class="pbar"><i id="pb${p.n}"></i></div></div><div class="cards">`;
     p.weeks_.forEach(w=>{
       h+=`<div class="card" id="w${w.w}" style="--c:${col}"><h3><span class="tag">${t("week").toUpperCase()} ${w.w}</span>${esc(wkTitle(w))}</h3><div class="sub" id="ws${w.w}"></div><ul class="todo">`;
       w.items.forEach((_,i)=>{const it=byId[`w${w.w}-${i}`];
@@ -469,7 +415,7 @@ function updatePlan(){
     $("#pb"+p.n).style.setProperty("--p",(d/n*100)+"%");$("#npc"+p.n).textContent=Math.round(d/n*100)+"%"});
   $("#pct").textContent=Math.round(done/total*100)+"%";
   $("#arc").style.strokeDashoffset=351.86*(1-done/total);
-  $("#sDone").textContent=done;$("#sLeft").textContent=total-done;$("#sWeeks").textContent=`${full} / 24`;
+  $("#sDone").textContent=done;$("#sLeft").textContent=total-done;$("#sWeeks").textContent=`${full} / ${allWeeks.length}`;
   $("#sNow").textContent=now?`${t("week")} ${now.w}`:t("allDone");
   document.querySelectorAll("#viewPlan li[data-id]").forEach(li=>{const c=isDone(li.dataset.id);li.classList.toggle("done",c);li.querySelector("input").checked=c});
   $("#hideDone").textContent=state.hide?t("show"):t("hide");$("#hideDone").classList.toggle("on",state.hide);
@@ -507,13 +453,13 @@ function renderDetail(id){
   const it=byId[id];curId=id;const d=detail(id),col=`var(${it.ph.c})`,p=it.ph;
   const vd=$("#viewDetail");vd.style.setProperty("--c",col);
   // sidebar
-  let s=`<a class="back" href="#/">${t("back")}</a><div class="phc"><div class="badge" style="--c:${col}">${p.n}</div><div><b>${esc(phName(p))}</b><small>${wkRange(p)}</small></div></div>`;
+  let s=`<a class="back" href="#/">${t("back")}</a><div class="phc"><div class="badge" style="--c:${col}">${p.code}</div><div><b>${esc(phName(p))}</b><small>${wkRange(p)}</small></div></div>`;
   p.weeks_.forEach(w=>{s+=`<div class="wkh">${t("week")} ${w.w} · ${esc(wkTitle(w))}</div>`;
     w.items.forEach((_,i)=>{const x=byId[`w${w.w}-${i}`];s+=`<a class="si${x.id===id?" cur":""}${isDone(x.id)?" ok":""}" href="#/item/${x.id}" data-sid="${x.id}"><span class="st"></span><span>${esc(itTitle(x))}</span></a>`})});
   $("#dSide").innerHTML=s;
   // main
   const idx=allItems.indexOf(it),prv=allItems[idx-1],nxt=allItems[idx+1];
-  let h=`<div class="dhead"><div class="dcrumb">Phase ${p.n} · ${esc(phName(p))} · ${t("week")} ${it.w.w} · ${t("task")} ${it.i+1}/${it.w.items.length}</div>
+  let h=`<div class="dhead"><div class="dcrumb">${p.code} · ${esc(phName(p))} · ${t("week")} ${it.w.w} · ${t("task")} ${it.i+1}/${it.w.items.length}</div>
     <h1>${esc(itTitle(it))}</h1><div class="meta"><span class="tag">${t("week").toUpperCase()} ${it.w.w}</span>${d&&d.time?`<span class="chip">⏱ ${esc(d.time)}</span>`:""}<span class="chip">${esc(wkTitle(it.w))}</span></div></div>`;
   if(!d){h+=`<div class="box" style="margin-top:22px">${t("noDetail")}</div>`}
   else{
@@ -529,7 +475,7 @@ function renderDetail(id){
   $("#dMain").innerHTML=h;
   $("#dMain").querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>navigator.clipboard.writeText(d.ai[b.dataset.copy][2]).then(()=>{b.textContent=t("copied");b.classList.add("ok");setTimeout(()=>{b.textContent=t("copy");b.classList.remove("ok")},1500)}));
   const mb=$("#markBtn");if(mb)mb.onclick=toggleCur;
-  $("#topCrumbs").textContent=`Phase ${p.n} › ${t("week")} ${it.w.w} › ${itTitle(it)}`;
+  $("#topCrumbs").textContent=`${p.code} › ${t("week")} ${it.w.w} › ${itTitle(it)}`;
   renderDetailState();
   const cur=$("#dSide .cur");cur&&cur.scrollIntoView({block:"nearest"});
 }
@@ -544,7 +490,7 @@ function renderDetailState(){
 function toggleCur(){if(!curId)return;state.c[curId]=!isDone(curId);save();renderDetailState();updatePlan()}
 
 // ───── SYNC (GitHub Gist) ─────
-const SK="aiplan.sync",FILE="ai-engineering-plan.json";
+const SK="aiplan.sync",FILE="ai-engineering-plan-v2.json";
 let sync=JSON.parse(localStorage.getItem(SK)||"{}"),pt;
 const saveSync=()=>localStorage.setItem(SK,JSON.stringify(sync));
 function setSync(s,msg){$("#syncBtn").dataset.s=s;$("#syncBtn").title=msg||"";$("#syncMsg").textContent=msg||""}
